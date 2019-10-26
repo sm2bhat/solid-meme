@@ -1,0 +1,64 @@
+//Solving the Lazy Updates question using difference array
+
+#include<stdio.h>
+# define mod 1000000007
+long long int arr[1000005],diff[1000005], multiplier[1000005],sum[1000005];
+/*long long int hash(long long int arr[100005],long long int n)
+{
+	long long int i, multiplier[100005],sum[100005];
+	printf("1\n");
+	multiplier[0]=1;
+	sum[0]=arr[0]%mod;
+	for (i=1;i<n;++i)
+	{
+		multiplier[i]=(multiplier[i-1]*107)%mod;
+		sum[i]=(sum[i-1] + (multiplier[i]*arr[i])%mod)%mod;
+	}
+	return sum[n-1];
+}*/
+int main()
+{
+	//long long int arr[100005],diff[100005], multiplier[100005],sum[100005];
+	long long int i,j,n,q,l,r,x,ans,mult;
+	scanf("%lld%lld",&n,&q);
+	for(i=0;i<n;i++)
+	{
+		scanf("%lld",&arr[i]);
+	}
+
+	diff[0]=arr[0];
+	for(i=1;i<n;i++)
+	{
+		diff[i]=arr[i]-arr[i-1];
+	}
+
+	for(i=0;i<q;i++)
+	{
+		scanf("%lld %lld %lld",&l,&r,&x);//
+		//for(j=l;j<r+1;j++)
+		//	arr[j]+=x;
+		diff[l]+=x;
+		diff[r+1]-=x;
+	}
+
+	arr[0]=diff[0];
+	//printf("%lld ",arr[0]);
+	for(i=1;i<n;i++)
+	{
+		arr[i]=diff[i]+arr[i-1];
+	//	printf("%lld ",arr[i]);
+	}
+	//ans=hash(arr,n);
+	multiplier[0]=1;
+	mult=1;
+	sum[0]=(arr[0]+mod)%mod;
+	for (i=1;i<n;++i)
+	{
+		//multiplier[i]=(multiplier[i-1]*107)%mod;
+		mult=(mult*107)%mod;
+		sum[i]=(((sum[i-1] + (mult*(arr[i]+mod)%mod)%mod)+mod)%mod);
+	}
+
+	printf("%lld\n",sum[n-1]);
+	return 0;
+}
